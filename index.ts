@@ -37,28 +37,7 @@ app.use(cors({
   res.send("Welcome to Kwickbill Development");
 });
 
-// Route to execute the 'bun run testDb.ts' command
-app.get("/test-db", (req, res) => {
-  const command = spawn("bun", ["run", "testDb.ts"]);
 
-  let output = "";
-
-  // Capture command output
-  command.stdout.on("data", (data) => {
-    output += data.toString();
-  });
-
-  command.stderr.on("data", (data) => {
-    output += `Error: ${data.toString()}`;
-  });
-
-  command.on("close", (code) => {
-    res.send({
-      message: `Command executed with exit code ${code}`,
-      output: output,
-    });
-  });
-});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
