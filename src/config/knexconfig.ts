@@ -5,7 +5,7 @@ export const db = knex({
   connection: {
     host: "database-5.crq6yqcualdr.ap-south-1.rds.amazonaws.com", // Update with your DB host
     user: "postgres", // Update with your DB username
-    password: "Rd9595454907", // Update with your DB password
+    password: "pgrajat12345", // Update with your DB password
     database: "kwickbill", // Update with your DB name
   },
   migrations: {

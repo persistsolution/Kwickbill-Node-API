@@ -29,13 +29,15 @@ app.use(unitRoute);
 
 // Enable CORS for specific origin
 app.use(cors({
-  origin: 'http://43.205.240.13:5174', // Allow requests from this origin
+  origin: 'http://43.205.240.13:5173', // Allow requests from this origin
  }));
 
 
  app.get("/", (req, res) => {
-  res.send("Welcome to Kwickbill Development");
+  res.send("Welcome to Kwickbill Production");
 });
+
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
