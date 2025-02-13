@@ -93,7 +93,7 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/kwickbill-api-dev:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/kwickbill-api-stage:latest
 
     # Restart application with PM2
     - name: Restart Application with PM2 
