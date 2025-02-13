@@ -89,7 +89,7 @@ jobs:
         tags: ${{ secrets.DOCKER_USERNAME }}/kwickbill-api-dev:latest
 
     # Restart application with PM2
-    - name: Restart Application with PM2
+    - name: Restart Application with PM2 
       run: |
         export PATH=$HOME/.bun/bin:$PATH
         pm2 start index.ts --name kwickbill-dev --interpreter bun --env PORT=3001 --update-env || pm2 restart kwickbill-dev --update-env
