@@ -7,7 +7,7 @@ const config: { [key: string]: Knex.Config } = {
       host: 'database-5.crq6yqcualdr.ap-south-1.rds.amazonaws.com',
       user: 'postgres',
       password: 'pgrajat12345',
-      database: 'kwickbill_stage',
+      database: 'kwickbill_test',
     },
     migrations: {
       directory: './migrations', // Path to migration files
