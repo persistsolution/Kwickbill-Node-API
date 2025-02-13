@@ -12,7 +12,7 @@ import userRoute from './src/routers/billsoftadmin/users/user-route';
 import brandRoute from './src/routers/billsoftadmin/selling-product/brand-route';
 import unitRoute from './src/routers/billsoftadmin/masters/unit-route';
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
 
 app.use(cors());
