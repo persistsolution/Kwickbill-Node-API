@@ -97,7 +97,7 @@ jobs:
         pm2 list
 
     # Run Trivy scan
-    - name: Run Trivy File System Scan
+    - name: Run Trivy File System Scan 
       run: |
         curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
         export PATH=$PATH:$(pwd)/bin
