@@ -12,7 +12,7 @@ import userRoute from './src/routers/billsoftadmin/users/user-route';
 import brandRoute from './src/routers/billsoftadmin/selling-product/brand-route';
 import unitRoute from './src/routers/billsoftadmin/masters/unit-route';
 const app = express();
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3003;
 
 
 app.use(cors());
@@ -29,12 +29,12 @@ app.use(unitRoute);
 
 // Enable CORS for specific origin
 app.use(cors({
-  origin: 'http://43.205.240.13:5175', // Allow requests from this origin
+  origin: 'http://43.205.240.13:5176', // Allow requests from this origin
  }));
 
 
  app.get("/", (req, res) => {
-  res.send("Welcome to Kwickbill Staging");
+  res.send("Welcome to Kwickbill Testing");
 });
 
 
