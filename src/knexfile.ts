@@ -4,10 +4,10 @@ const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'pg', // PostgreSQL client
     connection: {
-      host: 'database-3.crq6yqcualdr.ap-south-1.rds.amazonaws.com',
+      host: 'database-5.crq6yqcualdr.ap-south-1.rds.amazonaws.com',
       user: 'postgres',
-      password: 'Rd9595454907',
-      database: 'kwickbill_dev',
+      password: 'pgrajat12345',
+      database: 'kwickbill',
     },
     migrations: {
       directory: './migrations', // Path to migration files
