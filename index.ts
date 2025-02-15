@@ -11,6 +11,7 @@ import franchiseRoute from './src/routers/billsoftadmin/franchise/franchise-rout
 import userRoute from './src/routers/billsoftadmin/users/user-route';
 import brandRoute from './src/routers/billsoftadmin/selling-product/brand-route';
 import unitRoute from './src/routers/billsoftadmin/masters/unit-route';
+import allocateproductRoute from './src/routers/billsoftadmin/selling-product/allocate-product-route';
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -25,6 +26,7 @@ app.use(franchiseRoute);
 app.use(userRoute);
 app.use(brandRoute);
 app.use(unitRoute);
+app.use(allocateproductRoute);
 
 
 // Enable CORS for specific origin
@@ -40,5 +42,5 @@ app.use(cors({
 
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://13.232.248.194:${port}`);
 });
