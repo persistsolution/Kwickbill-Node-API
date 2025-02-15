@@ -3,7 +3,7 @@ import { getController} from '@controllers/billsoftadmin/selling-product/allocat
 
 const router = Router();
 
-router.get('/selling-product/allocate-product/get/:FrId', getController);
+router.get('/selling-product/allocate-product/get/:CreatedBy', getController);
 
 
 
