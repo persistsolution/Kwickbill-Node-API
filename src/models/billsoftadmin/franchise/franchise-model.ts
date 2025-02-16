@@ -353,7 +353,7 @@ class UserBill extends Model<UserBillAttributes, UserBillCreationAttributes> imp
     public MonthlySalary?: string | null;
     public DeclarationPhoto?: string | null;
     public MgrCheckpoint!: number;
-    public OtherEmp!: number;
+    public OtherEmp!: number; 
 }
 
 // Initialize the model
