@@ -173,6 +173,8 @@ export interface UserBillAttributes {
     ZoneId: number;
     MonthlySalary?: string | null;
     DeclarationPhoto?: string | null;
+    MgrCheckpoint: number;
+    OtherEmp: number;
 }
 
 // Define optional fields for creation
@@ -350,6 +352,8 @@ class UserBill extends Model<UserBillAttributes, UserBillCreationAttributes> imp
     public ZoneId!: number;
     public MonthlySalary?: string | null;
     public DeclarationPhoto?: string | null;
+    public MgrCheckpoint!: number;
+    public OtherEmp!: number;
 }
 
 // Initialize the model
@@ -524,6 +528,8 @@ UserBill.init(
     ZoneId: { type: DataTypes.INTEGER, allowNull: false },
     MonthlySalary: { type: DataTypes.STRING, allowNull: true },
     DeclarationPhoto: { type: DataTypes.STRING, allowNull: true },
+    MgrCheckpoint: { type: DataTypes.STRING, allowNull: true },
+    OtherEmp: { type: DataTypes.STRING, allowNull: true },
     },
     {
         sequelize,
