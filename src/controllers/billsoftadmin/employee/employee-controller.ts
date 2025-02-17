@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { create, destroy, get, edit, update} from "@models/billsoftadmin/employee/employee-model";
+import { create, destroy, get, edit, update, login} from "@services/billsoftadmin/employee/employee-services";
 // Get all Employee
 export const getController = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -67,3 +67,20 @@ export const deleteController = async (req: Request, res: Response): Promise<voi
   }
 };
   
+
+// login Employee
+export const loginController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const employees = await login(req.params.Phone); // Fetch employees with only required fields
+
+    if (!employees || employees.length === 0) {
+      res.status(404).json({ success: false, message: "No employees found" });
+      return;
+    }
+
+    res.status(200).json({ success: true, data: employees });
+  } catch (error) {
+    console.error("Error fetching Employees:", error);
+    res.status(500).json({ success: false, message: "Failed to fetch employees" });
+  }
+};
