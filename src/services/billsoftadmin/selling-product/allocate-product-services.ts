@@ -88,16 +88,6 @@ import { Op, Sequelize } from "sequelize";
 
 export const get = async (CreatedBy: number) => {
     try {
-        if (!CreatedBy) {
-            throw new Error("Missing CreatedBy parameter");
-        }
-
-        // Ensure CreatedBy is an integer
-        //const createdByInt = typeof CreatedBy === 'string' ? parseInt(CreatedBy, 10) : CreatedBy;
-        if (isNaN(CreatedBy)) {
-            throw new Error("Invalid CreatedBy parameter. Must be an integer.");
-        }
-
         const result = await db('tbl_cust_products_2025 as p')
             .select(
                 'p.ProductName', 'p.BarcodeNo', 'p.checkstatus', 'p.id',
@@ -113,6 +103,7 @@ export const get = async (CreatedBy: number) => {
             .where('p.CreatedBy', CreatedBy);
 
         return result;
+        
     } catch (error) {
         console.error("Error fetching products:", error);
         throw new Error("Internal server error");
