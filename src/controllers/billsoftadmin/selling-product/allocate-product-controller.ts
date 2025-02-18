@@ -7,7 +7,7 @@ export const getController = async (req: Request, res: Response): Promise<void> 
       res.json(listed);
     } catch (error) {
       console.error("Error fetching Product:", error);
-      res.status(500).json({ message: "Failed to fetch Product" });
+      res.status(500).json({ message: error });
     }
   };
 
