@@ -3,7 +3,6 @@ import { get,update} from "@services/billsoftadmin/selling-product/allocate-prod
 // Get all Product
 export const getController = async (req: Request, res: Response): Promise<void> => {
     try {
-      res.json(req.params.CreatedBy);
       const listed = await get(Number(req.params.CreatedBy));
       res.json(listed);
     } catch (error) {
