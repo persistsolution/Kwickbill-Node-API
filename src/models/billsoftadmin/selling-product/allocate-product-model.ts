@@ -1,5 +1,7 @@
-import { DataTypes, Model, Optional } from "sequelize";
+import { DataTypes, Model, Optional, Association, BelongsToGetAssociationMixin } from "sequelize";
 import { sequelize } from "../../../config/sequelize"; // Adjust path as needed
+import { Category } from "@models/billsoftadmin/selling-product/category-model"; // Import Category Model
+import { SubCategory } from "@models/billsoftadmin/selling-product/subcategory-model"; // Import SubCategory Model
 
 // Interface for Product attributes
 interface FrProductAttributes {
@@ -8,7 +10,7 @@ interface FrProductAttributes {
     ProductName?: string | null;
     BrandId: number;
     CatId: number;
-    SubCatId: string;
+    SubCatId: number;
     CgstPer?: string | null;
     SgstPer?: string | null;
     IgstPer?: string | null;
@@ -44,7 +46,12 @@ interface FrProductAttributes {
     PurchasePrice?: number | null;
     checkstatus: number;
     tempstatus: number;
+
+    // Add Associations
+    Category?: Category; 
+    SubCategory?: SubCategory;
 }
+
 
 // Define attributes for Product creation (all fields except `id` are optional)
 interface FrProductCreationAttributes extends Optional<FrProductAttributes, "id"> {}
@@ -55,7 +62,7 @@ export class FrProduct extends Model<FrProductAttributes, FrProductCreationAttri
     public ProductName?: string | null;
     public BrandId!: number;
     public CatId!: number;
-    public SubCatId!: string;
+    public SubCatId!: number;
     public CgstPer?: string | null;
     public SgstPer?: string | null;
     public IgstPer?: string | null;
@@ -91,6 +98,20 @@ export class FrProduct extends Model<FrProductAttributes, FrProductCreationAttri
     public PurchasePrice?: number | null;
     public checkstatus!: number;
     public tempstatus!: number;
+
+    // Define the associated models explicitly
+    public Category?: Category;
+    public SubCategory?: SubCategory;
+
+    // Declare Sequelize Association Getters (optional, but useful)
+    public getCategory!: BelongsToGetAssociationMixin<Category>;
+    public getSubCategory!: BelongsToGetAssociationMixin<SubCategory>;
+
+    // Define Sequelize Associations
+    public static associations: {
+        Category: Association<FrProduct, Category>;
+        SubCategory: Association<FrProduct, SubCategory>;
+    };
 }
 
 // Initialize the model
@@ -101,7 +122,7 @@ FrProduct.init(
         ProductName: { type: DataTypes.STRING, allowNull: true },
         BrandId: { type: DataTypes.INTEGER, allowNull: false },
         CatId: { type: DataTypes.INTEGER, allowNull: false },
-        SubCatId: { type: DataTypes.STRING, allowNull: false, defaultValue: "0" },
+        SubCatId: { type: DataTypes.INTEGER, allowNull: false, defaultValue: "0" },
         CgstPer: { type: DataTypes.STRING, allowNull: true },
         SgstPer: { type: DataTypes.STRING, allowNull: true },
         IgstPer: { type: DataTypes.STRING, allowNull: true },
@@ -145,5 +166,17 @@ FrProduct.init(
     }
 );
 
+
+
+export const associateFrProduct = () => {
+    const { Category } = require("../../../models/billsoftadmin/selling-product/category-model"); // Lazy Import
+    FrProduct.belongsTo(Category, { foreignKey: "CatId", as: "Category" });
+
+    const { SubCategory } = require("../../../models/billsoftadmin/selling-product/subcategory-model"); // Lazy Import
+    FrProduct.belongsTo(SubCategory, { foreignKey: "SubCatId", targetKey: "id", as: "SubCategory" });
+  };
+
+
 export { FrProductAttributes, FrProductCreationAttributes };
+export default FrProduct;
 
