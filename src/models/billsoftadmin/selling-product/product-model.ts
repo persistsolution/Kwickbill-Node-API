@@ -8,7 +8,7 @@ interface ProductAttributes {
     ProductName?: string | null;
     BrandId: number;
     CatId: number;
-    SubCatId: string;
+    SubCatId: number;
     CgstPer?: string | null;
     SgstPer?: string | null;
     IgstPer?: string | null;
@@ -55,7 +55,7 @@ export class Product extends Model<ProductAttributes, ProductCreationAttributes>
     public ProductName?: string | null;
     public BrandId!: number;
     public CatId!: number;
-    public SubCatId!: string;
+    public SubCatId!: number;
     public CgstPer?: string | null;
     public SgstPer?: string | null;
     public IgstPer?: string | null;
@@ -101,7 +101,7 @@ Product.init(
         ProductName: { type: DataTypes.STRING, allowNull: true },
         BrandId: { type: DataTypes.INTEGER, allowNull: false },
         CatId: { type: DataTypes.INTEGER, allowNull: false },
-        SubCatId: { type: DataTypes.STRING, allowNull: false, defaultValue: "0" },
+        SubCatId: { type: DataTypes.INTEGER, allowNull: false, defaultValue: "0" },
         CgstPer: { type: DataTypes.STRING, allowNull: true },
         SgstPer: { type: DataTypes.STRING, allowNull: true },
         IgstPer: { type: DataTypes.STRING, allowNull: true },

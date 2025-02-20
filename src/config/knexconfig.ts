@@ -9,6 +9,7 @@ export const db = knex({
     password: process.env.DB_PASSWORD, // Update with your DB password
     database: process.env.DB_NAME, // Update with your DB name
   },
+  useNullAsDefault: true,
   migrations: {
     directory: "./migrations", // Directory for migration files
   },

@@ -10,6 +10,7 @@ const config: { [key: string]: Knex.Config } = {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
     },
+    useNullAsDefault: true,
     migrations: {
       directory: './migrations', // Path to migration files
     },
