@@ -12,6 +12,7 @@ import brandRoute from './src/routers/billsoftadmin/selling-product/brand-route'
 import unitRoute from './src/routers/billsoftadmin/masters/unit-route';
 import allocateProductRoute from './src/routers/billsoftadmin/selling-product/allocate-product-route';
 import rawproductRoute from './src/routers/billsoftadmin/raw-product/product-route';
+import godownRoute from './src/routers/billsoftadmin/godown/godown-route';
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -27,6 +28,7 @@ app.use(brandRoute);
 app.use(unitRoute);
 app.use(allocateProductRoute);
 app.use(rawproductRoute);
+app.use(godownRoute);
 
 
 // Enable CORS for specific origin
