@@ -5,7 +5,7 @@ export async function up(knex: Knex): Promise<void> {
         table.increments('id').primary();
         table.string('name', 255).nullable();
         table.integer('srno').notNullable();
-        table.specificType('status', 'smallint').notNullable().defaultTo(1);
+        table.smallint('status').notNullable().defaultTo(1);
         table.integer('createdby').notNullable();
         table.datetime('createddate').nullable();
         table.integer('modifiedby').notNullable();

@@ -1,6 +1,11 @@
 import { Sequelize } from "sequelize";
 
-export const sequelize = new Sequelize("kwickbill", "postgres", "pgrajat12345", {
-  host: "database-5.crq6yqcualdr.ap-south-1.rds.amazonaws.com",
-  dialect: "postgres", // Or 'mysql' | 'mssql' | 'sqlite'
-});
+export const sequelize = new Sequelize(
+  process.env.DB_NAME!,
+  process.env.DB_USER!,
+  process.env.DB_PASSWORD!,
+  {
+    host: process.env.DB_HOST!,
+    dialect: "postgres",
+  }
+);
