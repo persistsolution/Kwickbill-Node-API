@@ -8,7 +8,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string('Icon', 100).collate('utf8mb4_general_ci').nullable();
         table.string('Photo', 100).collate('utf8mb4_general_ci').nullable();
         table.string('Photo2', 255).collate('utf8mb4_general_ci').nullable();
-        table.boolean('Featured').notNullable().defaultTo(0);
+        table.smallint('Featured').notNullable().defaultTo(0);
         table.integer('ProdType').notNullable().comment('0:custcat; 1:rawcat;');
         table.integer('Status').notNullable().defaultTo(1);
         table.float('srno', 14, 1).notNullable();
@@ -17,8 +17,8 @@ export async function up(knex: Knex): Promise<void> {
         table.integer('Roll').notNullable().defaultTo(1);
         table.integer('CreatedBy').notNullable();
         table.integer('ModifiedBy').notNullable();
-        table.boolean('push_flag').notNullable();
-        table.boolean('delete_flag').notNullable();
+        table.smallint('push_flag').notNullable().defaultTo(0);
+        table.smallint('delete_flag').notNullable().defaultTo(0);
         table.dateTime('modified_time', { precision: 3 }).nullable();
       });
 }
