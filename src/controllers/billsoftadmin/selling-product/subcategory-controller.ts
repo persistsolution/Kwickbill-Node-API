@@ -56,7 +56,7 @@ export const deleteController = async (req: Request, res: Response): Promise<voi
   try {
     const deleted = await destroy(Number(req.params.id));
     if (deleted) {
-      res.status(204).json({ message: "delete Category successfully" });
+      res.status(200).json({ message: "delete Category successfully" });
     } else {
       res.status(404).json({ message: "Category not found" });
     }
