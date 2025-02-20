@@ -173,6 +173,9 @@ export async function up(knex: Knex): Promise<void> {
         table.integer("ZoneId").notNullable();
         table.string("MonthlySalary", 20).nullable();
         table.text("DeclarationPhoto").nullable();
+        table.smallint("MgrCheckpoint").notNullable();
+        table.smallint("OtherEmp").notNullable();
+        
     });
 }
 

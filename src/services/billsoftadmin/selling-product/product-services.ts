@@ -8,7 +8,7 @@ export const get = async (ProdType: number): Promise<Product[]> => {
             throw new Error("Invalid ProdType parameter");
         }
 
-        const categories = await Product.findAll({ where: { ProdType: 0,ProdType2: { [Op.ne]: 3 } } });
+        const categories = await Product.findAll({ where: { ProdType: ProdType,ProdType2: { [Op.ne]: 3 } } });
 
         if (!categories.length) {
             throw new Error(`No Product found`);

@@ -2,13 +2,13 @@ name: Node.js CI with OWASP Dependency Check, PM2, Docker, and Trivy
 
 on:
   push:
-    branches: [ "stage" ]
+    branches: [ "dev" ]
   pull_request_target:
-    branches: [ "stage" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/stage'
+    if: github.ref == 'refs/heads/dev'
     runs-on: self-hosted
 
     strategy:
@@ -99,7 +99,7 @@ jobs:
     - name: Restart Application with PM2 
       run: |
         export PATH=$HOME/.bun/bin:$PATH
-        pm2 start index.ts --name kwickbill-stage --interpreter bun --env PORT=3002 --update-env || pm2 restart kwickbill-stage --update-env
+        pm2 start index.ts --name kwickbill-dev --interpreter bun --env PORT=3001 --update-env || pm2 restart kwickbill-dev --update-env
         pm2 save
         pm2 list
 
