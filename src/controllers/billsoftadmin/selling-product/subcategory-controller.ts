@@ -3,7 +3,7 @@ import { create, destroy, get, edit, update, getSubCategory} from "@services/bil
 // Get all Category
 export const getController = async (req: Request, res: Response): Promise<void> => {
     try {
-      const listed = await get();
+      const listed = await get(Number(req.params.ProdType));
       res.json(listed);
     } catch (error) {
       console.error("Error fetching Category:", error);

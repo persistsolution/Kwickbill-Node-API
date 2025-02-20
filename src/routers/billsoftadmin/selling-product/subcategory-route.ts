@@ -3,7 +3,7 @@ import { createController, deleteController, getController, editController, upda
 
 const router = Router();
 
-router.get('/selling-product/subcategory/get', getController);
+router.get('/selling-product/subcategory/get/:ProdType', getController);
 router.post("/selling-product/subcategory/create", createController);
 router.get("/selling-product/subcategory/edit/:id", editController);
 router.put("/selling-product/subcategory/update/:id", updateController);
