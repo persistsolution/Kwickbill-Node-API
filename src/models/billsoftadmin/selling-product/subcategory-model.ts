@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../../../config/sequelize";
+import { FrProduct } from "@models/billsoftadmin/selling-product/allocate-product-model";
 
 // Define SubCategory attributes
 interface SubCategoryAttributes {
@@ -94,5 +95,10 @@ SubCategory.init(
   }
 );
 
+// Function to define associations after all models are imported
+export const associateSubCategory = () => {
+  const { FrProduct } = require("../../../models/billsoftadmin/selling-product/allocate-product-model"); // Lazy Import
+  SubCategory.hasMany(FrProduct, { foreignKey: "SubCatId", as: "Products" });
+};
 // Exporting the model
 export { SubCategoryAttributes, SubCategoryCreationAttributes };

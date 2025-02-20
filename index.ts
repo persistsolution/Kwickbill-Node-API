@@ -8,9 +8,10 @@ import subCategoryRoute from './src/routers/billsoftadmin/selling-product/subcat
 import employeeRoute from './src/routers/billsoftadmin/employee/employee-route';
 import productRoute from './src/routers/billsoftadmin/selling-product/product-route';
 import franchiseRoute from './src/routers/billsoftadmin/franchise/franchise-route';
-import userRoute from './src/routers/billsoftadmin/users/user-route';
 import brandRoute from './src/routers/billsoftadmin/selling-product/brand-route';
 import unitRoute from './src/routers/billsoftadmin/masters/unit-route';
+import allocateProductRoute from './src/routers/billsoftadmin/selling-product/allocate-product-route';
+import rawproductRoute from './src/routers/billsoftadmin/raw-product/product-route';
 const app = express();
 const port = process.env.PORT || 3003;
 
@@ -22,9 +23,10 @@ app.use(subCategoryRoute);
 app.use(employeeRoute);
 app.use(productRoute);
 app.use(franchiseRoute);
-app.use(userRoute);
 app.use(brandRoute);
 app.use(unitRoute);
+app.use(allocateProductRoute);
+app.use(rawproductRoute);
 
 
 // Enable CORS for specific origin
@@ -40,5 +42,5 @@ app.use(cors({
 
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://13.232.248.194:${port}`);
 });

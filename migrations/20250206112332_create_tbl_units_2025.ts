@@ -6,8 +6,8 @@ export async function up(knex: Knex): Promise<void> {
         table.increments("id").primary();
         table.string("Name", 100).nullable();
         table.string("Name2", 100).nullable();
-        table.specificType("Status", "smallint").notNullable().defaultTo(1);
-        table.specificType("roll", "smallint").notNullable().defaultTo(0);
+        table.smallint("Status").notNullable().defaultTo(1);
+        table.smallint("roll").notNullable().defaultTo(0);
       });
 }
 

@@ -1,8 +1,24 @@
 import { SubCategory, SubCategoryCreationAttributes } from "@models/billsoftadmin/selling-product/subcategory-model";
 
 // Get all categories
-export const get = async (): Promise<SubCategory[]> => {
-    return await SubCategory.findAll();
+export const get = async (ProdType: number): Promise<SubCategory[]> => {
+  try {
+    // Ensure ProdType is a valid number
+    if (isNaN(ProdType)) {
+        throw new Error("Invalid ProdType parameter");
+    }
+
+    const categories = await SubCategory.findAll({ where: { ProdType } });
+
+    if (!categories.length) {
+        throw new Error(`No Sub categories found for ProdType: ${ProdType}`);
+    }
+
+    return categories;
+} catch (error) {
+    console.error("Error fetching Sub categories:", error);
+    throw new Error("Failed to fetch Sub Category");
+}
   };
   
   // Create a category

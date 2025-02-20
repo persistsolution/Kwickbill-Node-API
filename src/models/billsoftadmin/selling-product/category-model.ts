@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import { sequelize } from "../../../config/sequelize";
+import { FrProduct } from "@models/billsoftadmin/selling-product/allocate-product-model"; // Import Category Model
 
 // Define Category attributes
 export interface CategoryAttributes {
@@ -131,5 +132,12 @@ Category.init(
         timestamps: false,
     }
 );
+
+
+// Function to define associations after all models are imported
+export const associateCategory = () => {
+  const { FrProduct } = require("../../../models/billsoftadmin/selling-product/allocate-product-model"); // Lazy Import
+  Category.hasMany(FrProduct, { foreignKey: "CatId", as: "Products" });
+};
 
 export { Category }; // Export separately
