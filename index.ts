@@ -36,7 +36,7 @@ app.use(cors({
 
 
  app.get("/", (req, res) => {
-  res.send("Welcome to Kwickbill Testing");
+  res.send("Welcome to Kwickbill Development");
 });
 
 
