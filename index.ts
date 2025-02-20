@@ -13,7 +13,7 @@ import unitRoute from './src/routers/billsoftadmin/masters/unit-route';
 import allocateProductRoute from './src/routers/billsoftadmin/selling-product/allocate-product-route';
 import rawproductRoute from './src/routers/billsoftadmin/raw-product/product-route';
 const app = express();
-const port = process.env.PORT || 3003;
+const port = process.env.PORT || 3001;
 
 
 app.use(cors());
@@ -31,7 +31,7 @@ app.use(rawproductRoute);
 
 // Enable CORS for specific origin
 app.use(cors({
-  origin: 'http://43.205.240.13:5176', // Allow requests from this origin
+  origin: 'http://43.205.240.13:5174', // Allow requests from this origin
  }));
 
 
