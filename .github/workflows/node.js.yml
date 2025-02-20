@@ -2,13 +2,13 @@ name: Node.js CI with OWASP Dependency Check, PM2, Docker, and Trivy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "dev" ]
   pull_request_target:
-    branches: [ "main" ]
+    branches: [ "dev" ]
 
 jobs:
   build:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/dev'
     runs-on: self-hosted
 
     strategy:
@@ -32,12 +32,14 @@ jobs:
         if ! command -v unzip &> /dev/null; then
           sudo apt-get update && sudo apt-get install -y unzip
         fi
+
         # Install Bun
         if ! command -v bun &> /dev/null; then
           curl -fsSL https://bun.sh/install | bash
           echo "$HOME/.bun/bin" >> $GITHUB_PATH
         fi
         export PATH=$HOME/.bun/bin:$PATH
+
         # Install PM2
         if ! command -v pm2 &> /dev/null; then
           npm install -g pm2
@@ -61,7 +63,6 @@ jobs:
           --failOnCVSS 5 \
           --disableAssembly \
           --suppression suppressions.xml || true
-
     - name: Upload OWASP Reports
       uses: actions/upload-artifact@v4
       with:
@@ -74,7 +75,7 @@ jobs:
         export PATH=$HOME/.bun/bin:$PATH
         bun build index.ts --if-present
 
-    # **Set up Docker Buildx (Fix for Buildx error)**
+    # Set up Docker Buildx
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
 
@@ -92,20 +93,20 @@ jobs:
         context: .
         file: ./Dockerfile
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/kwickbill-api-prod:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/kwickbill-api-dev:latest
 
     # Restart application with PM2
-    - name: Restart Application with PM2
+    - name: Restart Application with PM2 
       run: |
         export PATH=$HOME/.bun/bin:$PATH
-        pm2 start index.ts --name kwickbill-prod --interpreter bun --env PORT=3000 --update-env || pm2 restart kwickbill-prod --update-env
+        pm2 start index.ts --name kwickbill-dev --interpreter bun --env PORT=3001 --update-env || pm2 restart kwickbill-dev --update-env
         pm2 save
         pm2 list
 
     # Run Trivy scan
-    - name: Run Trivy File System Scan
+    - name: Run Trivy File System Scan 
       run: |
         curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
         export PATH=$PATH:$(pwd)/bin
         trivy fs --exit-code 0 --severity MEDIUM,HIGH,CRITICAL .
-        trivy fs --exit-code 1 --severity CRITICAL .
+        trivy fs --exit-code 1 --severity CRITICAL . 
