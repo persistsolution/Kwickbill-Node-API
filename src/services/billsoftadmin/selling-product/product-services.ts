@@ -1,23 +1,42 @@
 import { Product, ProductAttributes, ProductCreationAttributes } from "@models/billsoftadmin/selling-product/product-model";
+import { db } from "config/knexconfig";
 import { Op } from "sequelize";
 
-export const get = async (ProdType: number): Promise<Product[]> => {
+
+export const get = async (prodType: number | string): Promise<Product[]> => {
     try {
-        // Ensure ProdType is a valid number
-        if (isNaN(ProdType)) {
-            throw new Error("Invalid ProdType parameter");
+        // Convert prodType to a number if it's a string
+        const prodTypeNum = Number(prodType);
+        if (isNaN(prodTypeNum)) {
+            throw new Error("Invalid prodType parameter. Must be a number.");
         }
 
-        const categories = await Product.findAll({ where: { ProdType: ProdType,ProdType2: { [Op.ne]: 3 } } });
+        const products: Product[] = await db("tbl_cust_products2 as tp")
+            .leftJoin("tbl_cust_category_2025 as tc", "tc.id", "tp.CatId")
+            .leftJoin("tbl_cust_sub_category_2025 as tcs", "tcs.id", "tp.SubCatId")
+            .select(
+                "tp.BarcodeNo",
+                "tp.id",
+                "tp.ProductName",
+                "tp.CreatedDate",
+                "tc.Name as CatName",
+                "tcs.Name as SubCatName",
+                "tp.ProdType2",
+                "tp.Status",
+                "tp.MinPrice"
+            )
+            .where("tp.ProdType", prodTypeNum)
+            .whereNot("tp.ProdType2", 3)
+            .orderBy("tp.CreatedDate", "desc");
 
-        if (!categories.length) {
-            throw new Error(`No Product found`);
+        if (!products.length) {
+            throw new Error("No products found.");
         }
 
-        return categories;
+        return products;
     } catch (error) {
-        console.error("Error fetching Product:", error);
-        throw new Error("Failed to fetch Product");
+        console.error("Error fetching Raw Product:", error);
+        throw new Error("Failed to fetch Raw Product");
     }
 };
 
