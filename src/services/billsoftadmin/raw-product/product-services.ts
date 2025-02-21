@@ -2,6 +2,7 @@ import { Product, ProductAttributes, ProductCreationAttributes } from "@models/b
 import { db } from "config/knexconfig";
 import { Op } from "sequelize";
 import { Knex } from "knex";
+import { UserBill } from "@models/billsoftadmin/franchise/franchise-model";
 
 export const get = async (ProdType: number | string): Promise<Product[]> => {
     try {
@@ -108,5 +109,32 @@ export const getMakingProdList = async (): Promise<Pick<Product, "id" | "Product
     } catch (error) {
         console.error("Error fetching Product:", error);
         throw new Error("Failed to fetch Product");
+    }
+};
+
+// allocate raw prod id
+export const allocateRawProdService = async (FrId: number, RawProdId: string) => {
+    try {
+        // Convert RawProdId to a string format for updating
+        const AllocateProd = RawProdId.trim();
+
+        // Update tbl_users_bill using the UserBill model
+        const userBillUpdate = await UserBill.update(
+            { AllocateRawProd: AllocateProd },
+            { where: { id: FrId } }
+        );
+
+        // Check if at least one table was updated
+        if (userBillUpdate[0] > 0) {
+            return { success: true, message: `Successfully updated AllocateRawProd for Franchise ID ${FrId}` };
+        } else {
+            return { success: false, status: 404, message: "No records found for the given FrId" };
+        }
+    } catch (error: unknown) {
+        // Ensure TypeScript knows `error` is an instance of Error
+        const errMsg = error instanceof Error ? error.message : "Unknown error";
+
+        console.error("Error in allocateRawProdService:", errMsg);
+        return { success: false, status: 500, message: "Database update failed", error: errMsg };
     }
 };

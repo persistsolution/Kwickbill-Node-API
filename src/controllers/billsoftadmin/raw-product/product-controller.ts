@@ -1,6 +1,13 @@
 import { Request, Response } from 'express';
-import { get, create, edit, destroy ,getMakingProdList} from "@services/billsoftadmin/raw-product/product-services";
+import { get, create, edit, destroy ,getMakingProdList,allocateRawProdService} from "@services/billsoftadmin/raw-product/product-services";
 import { ProductCreationAttributes } from "@models/billsoftadmin/selling-product/product-model";
+
+// Define the expected request body structure
+interface AllocateRawProdRequest {
+  FrId?: number | string; // Allow string input for conversion
+  RawProdId?: string;
+}
+
 // Get all Product
 export const getController = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -136,5 +143,36 @@ export const getMakingProdController = async (req: Request, res: Response): Prom
   } catch (error) {
     console.error("Error fetching Product:", error);
     res.status(500).json({ message: "Failed to fetch Product" });
+  }
+};
+
+export const allocateRawProdController = async (req: Request, res: Response): Promise<void> => {
+  try {
+      // Extracting data from request body and enforcing types
+      const { FrId, RawProdId } = req.body as AllocateRawProdRequest;
+
+      // Convert FrId to a number (handle undefined)
+      const parsedFrId = FrId !== undefined ? Number(FrId) : NaN;
+
+      // Validate input data
+      if (isNaN(parsedFrId) || !RawProdId) {
+          res.status(400).json({ message: "Valid FrId (number) and RawProdId are required" });
+          return;
+      }
+
+      // Call service to update records
+      const updateResult = await allocateRawProdService(parsedFrId, RawProdId);
+
+      if (updateResult.success) {
+          res.status(200).json({ message: updateResult.message });
+      } else {
+          res.status(400).json({ message: updateResult.message });
+      }
+  } catch (error: unknown) {
+      // Ensure TypeScript knows `error` is an instance of Error
+      const errMsg = error instanceof Error ? error.message : "Unknown error";
+
+      console.error("Error in allocateRawProdController:", errMsg);
+      res.status(500).json({ message: "Internal Server Error", error: errMsg });
   }
 };
