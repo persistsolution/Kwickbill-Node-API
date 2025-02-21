@@ -1,6 +1,7 @@
 import { Product, ProductAttributes, ProductCreationAttributes } from "@models/billsoftadmin/selling-product/product-model";
 import { db } from "config/knexconfig";
 import { Op } from "sequelize";
+import { Knex } from "knex";
 
 export const get = async (ProdType: number | string): Promise<Product[]> => {
     try {
@@ -37,36 +38,41 @@ export const get = async (ProdType: number | string): Promise<Product[]> => {
 export const create = async (
     saveRecord: ProductCreationAttributes,
     productDetails: { id: number; Qty: number; Unit: string }[]
-): Promise<Product> => {
-    try {
-        const newRecord = await Product.create(saveRecord);
-        const prodid = newRecord.id;
+): Promise<any> => {
+    return await db.transaction(async (trx: Knex.Transaction) => {
+        try {
+            // Insert Product using Knex
+            const insertedProduct = await trx("tbl_cust_products2") // Update table name if needed
+                .insert(saveRecord)
+                .returning("id");
 
-        console.log("New Product Inserted:", newRecord);
+            const prodid = insertedProduct[0].id; // Extracts actual integer ID
+            console.log("New Product Inserted:", prodid);
 
-        // Insert multiple product details into tbl_raw_prod_make_qty_2025
-        const insertData = productDetails.map((product) => ({
-            RawQty: product.Qty,
-            RawUnit: product.Unit,
-            RawProdId: prodid, // Inserted Product ID
-            CustProdId: product.id,
-            MakingQty:product.Qty,
-            MakingQtyUnit2:product.Unit,
-            MakingQty2:product.Qty
-        }));
+            // Prepare data for bulk insert
+            if (productDetails.length > 0) {
+                const insertData = productDetails.map((product) => ({
+                    RawQty: product.Qty,
+                    RawUnit: product.Unit,
+                    RawProdId: prodid, // Now it's correctly an integer
+                    CustProdId: product.id,
+                    MakingQty: product.Qty,
+                    MakingQtyUnit2: product.Unit,
+                    MakingQty2: product.Qty,
+                }));
 
-        // Execute the bulk insert using Knex
-        await db("tbl_raw_prod_make_qty_2025").insert(insertData);
+                // Bulk insert into `tbl_raw_prod_make_qty_2025`
+                await trx("tbl_raw_prod_make_qty_2025").insert(insertData);
+            }
 
-        console.log("Product details inserted successfully!");
-
-        return newRecord;
-    } catch (error) {
-        console.error("Error creating Product:", error);
-        throw error;
-    }
+            console.log("Product details inserted successfully!");
+            return { id: prodid, ...saveRecord }; // Return the inserted product
+        } catch (error) {
+            console.error("Error creating Product:", error);
+            throw error; // Transaction auto-rolls back on error
+        }
+    });
 };
-
 
 // Get category by ID
 export const edit = async (id: number): Promise<Product | null> => {
