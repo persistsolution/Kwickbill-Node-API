@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { get, create, edit, destroy } from "@services/billsoftadmin/raw-product/product-services";
+import { get, create, edit, destroy ,getMakingProdList} from "@services/billsoftadmin/raw-product/product-services";
 import { ProductCreationAttributes } from "@models/billsoftadmin/selling-product/product-model";
 // Get all Product
 export const getController = async (req: Request, res: Response): Promise<void> => {
@@ -126,5 +126,15 @@ export const deleteController = async (req: Request, res: Response): Promise<voi
   } catch (error) {
     console.error("Error deleting Product:", error);
     res.status(500).json({ message: "Failed to delete Product" });
+  }
+};
+
+export const getMakingProdController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const listed = await getMakingProdList();
+    res.json(listed);
+  } catch (error) {
+    console.error("Error fetching Product:", error);
+    res.status(500).json({ message: "Failed to fetch Product" });
   }
 };

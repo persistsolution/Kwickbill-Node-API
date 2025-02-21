@@ -93,3 +93,20 @@ export const destroy = async (id: number): Promise<boolean> => {
         throw error;
     }
 };
+
+export const getMakingProdList = async (): Promise<Pick<Product, "id" | "ProductName">[]> => {
+    try {
+        const categories = await Product.findAll({
+            where: { Status: 1, ProdType: 0, ProdType2: 2 }, // Added Status filter and AND condition
+            attributes: ["id", "ProductName"], // Ensure correct field names
+            order: [["ProductName", "ASC"]] // Order by ProductName ascending
+        });
+
+        console.log("Fetched Categories:", JSON.stringify(categories, null, 2)); // Debugging
+
+        return categories.map(product => product.get({ plain: true })); // Ensure raw objects
+    } catch (error) {
+        console.error("Error fetching Product:", error);
+        throw new Error("Failed to fetch Product");
+    }
+};
