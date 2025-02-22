@@ -72,3 +72,18 @@ export const destroy = async (id: number): Promise<boolean> => {
     }
 };
 
+// Get Franchise by ID
+export const getAllocateRawIds = async (id: number): Promise<{ AllocateRawProd: any } | null> => {
+    try {
+      const userBill = await UserBill.findByPk(id);
+      if (!userBill) {
+        return null;
+      }
+      // Convert the Sequelize instance to a plain object
+      const data = userBill.get({ plain: true });
+      return { AllocateRawProd: data.AllocateRawProd };
+    } catch (error) {
+      console.error("Error fetching Franchise by ID:", error);
+      throw error;
+    }
+  };

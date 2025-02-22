@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { create, destroy, get, edit, update} from "@services/billsoftadmin/franchise/franchise-services";
+import { create, destroy, get, edit, update,getAllocateRawIds} from "@services/billsoftadmin/franchise/franchise-services";
 
 // Get Franchises by Type
 export const getController = async (req: Request, res: Response): Promise<void> => {
@@ -91,5 +91,29 @@ export const deleteController = async (req: Request, res: Response): Promise<voi
     console.error("Error deleting Franchise:", error);
     const errMsg = error instanceof Error ? error.message : "An unknown error occurred";
     res.status(500).json({ message: "Failed to delete Franchise", error: errMsg });
+  }
+};
+
+// Get Franchise by ID
+export const getAllocateRawIdController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      res.status(400).json({ message: "Invalid ID parameter" });
+      return;
+    }
+
+    const franchise = await getAllocateRawIds(id);
+    if (!franchise) {
+      res.status(404).json({ message: "Franchise not found" });
+    } else {
+      // Extract only the AllocateRawProd field
+      const { AllocateRawProd } = franchise;
+      res.status(200).json({ AllocateRawProd });
+    }
+  } catch (error) {
+    console.error("Error fetching Franchise by ID:", error);
+    const errMsg = error instanceof Error ? error.message : "An unknown error occurred";
+    res.status(500).json({ message: "Failed to fetch Franchise", error: errMsg });
   }
 };

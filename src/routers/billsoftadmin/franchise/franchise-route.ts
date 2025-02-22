@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createController, deleteController, getController, editController, updateController } from '@controllers/billsoftadmin/franchise/franchise-controller';
+import { createController, deleteController, getController, editController, updateController,getAllocateRawIdController } from '@controllers/billsoftadmin/franchise/franchise-controller';
 
 const router = Router();
 
@@ -8,5 +8,6 @@ router.post("/franchise/create", createController);
 router.get("/franchise/edit/:id", editController);
 router.put("/franchise/update/:id", updateController);
 router.delete("/franchise/delete/:id", deleteController);
+router.get("/franchise/getallocaterawid/:id", getAllocateRawIdController);
 
 export default router;
