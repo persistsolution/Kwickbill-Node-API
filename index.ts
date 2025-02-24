@@ -14,6 +14,7 @@ import allocateProductRoute from './src/routers/billsoftadmin/selling-product/al
 import rawproductRoute from './src/routers/billsoftadmin/raw-product/product-route';
 import godownRoute from './src/routers/billsoftadmin/godown/godown-route';
 import godownStockRoute from './src/routers/billsoftadmin/godown/godown-stock-route';
+import transferStockRoute from './src/routers/billsoftadmin/godown/transfer-stock-route';
 const app = express();
 const port = process.env.PORT || 3001;
 
@@ -31,6 +32,7 @@ app.use(allocateProductRoute);
 app.use(rawproductRoute);
 app.use(godownRoute);
 app.use(godownStockRoute);
+app.use(transferStockRoute);
 
 // Enable CORS for specific origin
 app.use(cors({
