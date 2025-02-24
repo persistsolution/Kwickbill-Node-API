@@ -52,7 +52,7 @@ export const getStockProdDetailsController = async (req: Request, res: Response)
         };
 
         const result = await create(saveRecord);
-        res.status(201).json({ message: "Stock added successfully", data: result });
+        res.status(200).json({ message: "Stock added successfully", data: result });
     } catch (error) {
         console.error("Error creating godown stock:", error);
         res.status(500).json({ message: "Internal Server Error" });
