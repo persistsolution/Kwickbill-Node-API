@@ -20,7 +20,8 @@ export const get = async (ProdType: number | string): Promise<Product[]> => {
                 'tp.CreatedDate',
                 'tp.id',
                 'tc.Name as CatName',
-                'tcs.Name as SubCatName'
+                'tcs.Name as SubCatName',
+                "tp.Status",
             )
             .where('tp.ProdType', prodTypeNum) // Ensure ProdType is passed as a number
             .orderBy('tp.CreatedDate', 'desc');
