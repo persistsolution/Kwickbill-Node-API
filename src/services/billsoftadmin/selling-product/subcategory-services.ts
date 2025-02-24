@@ -1,25 +1,31 @@
 import { SubCategory, SubCategoryCreationAttributes } from "@models/billsoftadmin/selling-product/subcategory-model";
+import { db } from "config/knexconfig";
 
 // Get all categories
 export const get = async (ProdType: number): Promise<SubCategory[]> => {
   try {
-    // Ensure ProdType is a valid number
-    if (isNaN(ProdType)) {
-        throw new Error("Invalid ProdType parameter");
-    }
+      // Validate ProdType
+      if (isNaN(ProdType)) {
+          throw new Error("Invalid ProdType parameter");
+      }
 
-    const categories = await SubCategory.findAll({ where: { ProdType } });
+      // Query using Knex.js
+      const categories = await db("tbl_cust_sub_category_2025 as sb")
+          .select("sb.*", "c.Name as CatName")
+          .join("tbl_cust_category_2025 as c", "c.id", "sb.CatId")
+          .where("sb.ProdType", ProdType)
+          .orderBy("sb.id", "desc");
 
-    if (!categories.length) {
-        throw new Error(`No Sub categories found for ProdType: ${ProdType}`);
-    }
+      if (!categories.length) {
+          throw new Error(`No Sub categories found for ProdType: ${ProdType}`);
+      }
 
-    return categories;
-} catch (error) {
-    console.error("Error fetching Sub categories:", error);
-    throw new Error("Failed to fetch Sub Category");
-}
-  };
+      return categories;
+  } catch (error) {
+      console.error("Error fetching Sub categories:", error);
+      throw new Error("Failed to fetch Sub Category");
+  }
+};
   
   // Create a category
   export const create= async (
