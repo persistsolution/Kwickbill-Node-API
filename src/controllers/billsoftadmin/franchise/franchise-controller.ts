@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { create, destroy, get, edit, update,getAllocateRawIds} from "@services/billsoftadmin/franchise/franchise-services";
+import { create, destroy, get, edit, update,getAllocateRawIds, getOwnFr} from "@services/billsoftadmin/franchise/franchise-services";
 
 // Get Franchises by Type
 export const getController = async (req: Request, res: Response): Promise<void> => {
@@ -116,4 +116,21 @@ export const getAllocateRawIdController = async (req: Request, res: Response): P
     const errMsg = error instanceof Error ? error.message : "An unknown error occurred";
     res.status(500).json({ message: "Failed to fetch Franchise", error: errMsg });
   }
+};
+
+// Get Franchises by Ownfracnhise
+export const getOwnFrController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const OwnFranchise = Number(req.params.OwnFranchise);
+    if (isNaN(OwnFranchise)) {
+      res.status(400).json({ message: "Invalid Franchise Type parameter" });
+      return;
+    }
+
+    const franchises = await getOwnFr(OwnFranchise);
+    res.status(200).json(franchises);
+  } catch (error) {
+    console.error("Error fetching Franchise:", error);
+    res.status(500).json({ message: "Failed to fetch Franchise" });
+}
 };

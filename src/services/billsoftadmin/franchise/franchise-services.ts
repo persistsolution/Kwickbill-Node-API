@@ -87,3 +87,26 @@ export const getAllocateRawIds = async (id: number): Promise<{ AllocateRawProd: 
       throw error;
     }
   };
+
+  // Get Franchises by OwnFranchiseType
+export const getOwnFr = async (OwnFranchise: number): Promise<UserBill[]> => {
+    try {
+        if (isNaN(OwnFranchise)) {
+            throw new Error("Invalid FranchiseType parameter");
+        }
+
+        const franchises = await UserBill.findAll({
+            where: { Roll: 5, OwnFranchise },
+            attributes: ["id", "ShopName"]  // Only select "id" and "shopname"
+        });
+
+        if (!franchises.length) {
+            throw new Error(`No franchises found for FranchiseType: ${OwnFranchise}`);
+        }
+
+        return franchises;
+    } catch (error) {
+        console.error("Error fetching franchises:", error);
+        throw new Error("Failed to fetch Franchise");
+    }
+};
