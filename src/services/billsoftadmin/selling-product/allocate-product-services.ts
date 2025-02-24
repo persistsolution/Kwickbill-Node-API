@@ -106,7 +106,7 @@ export const get = async (CreatedBy: number) => {
             )
             .innerJoin('tbl_cust_category_2025 as c', 'c.id', 'p.CatId')
             .innerJoin('tbl_cust_sub_category_2025 as cs', function () {
-                this.on('cs.id', '=', db.raw("NULLIF(p.\"SubCatId\", '')::INTEGER"));
+                this.on('cs.id', '=', 'p.SubCatId');
             })
             .where('p.ProdType', 0)
             .whereNot('p.ProdType2', 3)
