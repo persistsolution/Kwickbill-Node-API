@@ -22,15 +22,16 @@ export const getController = async (req: Request, res: Response): Promise<void> 
   // Create Godown
   export const createController = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { GodownId, FranchiseId, TotQty, GstAmount, TotalAmount, InvoiceNo, StockDate, Narration, productdetails } = req.body;
+        const { GodownId, OwnShop, FranchiseId, TotQty, GstAmount, TotalAmount, InvoiceNo, StockDate, Narration, productdetails } = req.body;
 
-        if (!GodownId || !FranchiseId || !TotQty || !TotalAmount || !InvoiceNo || !GstAmount || !StockDate || !productdetails || !Array.isArray(productdetails) || productdetails.length === 0) {
+        if (!GodownId || !OwnShop || !FranchiseId || !TotQty || !TotalAmount || !InvoiceNo || !GstAmount || !StockDate || !productdetails || !Array.isArray(productdetails) || productdetails.length === 0) {
             res.status(400).json({ message: "Invalid input data." });
             return;
         }
 
         const saveRecord = {
             GodownId,
+            OwnShop,
             FranchiseId,
             TotQty,
             GstAmount,

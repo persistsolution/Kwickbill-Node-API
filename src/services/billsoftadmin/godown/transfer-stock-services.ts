@@ -2,6 +2,7 @@ import { db } from "config/knexconfig";
 
 export interface TransferStockCreationAttributes {
     GodownId: number;
+    OwnShop:number;
     FranchiseId: number;
     TotQty: number;
     GstAmount: number;
@@ -73,7 +74,7 @@ export const create = async (saveRecord: TransferStockCreationAttributes) => {
                 TotalAmount: saveRecord.TotalAmount,
                 InvoiceNo: saveRecord.InvoiceNo,
                 GstAmount: saveRecord.GstAmount,
-                OwnShop: 0
+                OwnShop: saveRecord.OwnShop,
             })
             .returning("id"); // Ensures ID is auto-generated
 
@@ -119,7 +120,7 @@ const insertIntoTransferStockItems = async (saveRecord: TransferStockCreationAtt
         CreatedDate: new Date(),
         CreatedBy: 1, // Replace with authenticated user ID
         StockDate: saveRecord.StockDate,
-        OwnShop: 1,
+        OwnShop: saveRecord.OwnShop,
         Receive: 0, // Default value
         FrProdId:0,
     }));
@@ -150,7 +151,7 @@ const insertIntoGodownStock = async (saveRecord: TransferStockCreationAttributes
         CreatedDate: new Date(),
         CreatedBy: 1, // Replace with authenticated user ID
         StockDate: saveRecord.StockDate,
-        OwnShop: 1,
+        OwnShop: saveRecord.OwnShop,
         Status: "Dr",
         Narration: saveRecord.Narration,
         InvId:0,
