@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { get,getStockProdList,getStockProdDetails} from "@services/billsoftadmin/godown/godown-stock-services";
+import { get,getStockProdList,getStockProdDetails,create} from "@services/billsoftadmin/godown/godown-stock-services";
 
 // Get Godown by Type
 export const getController = async (req: Request, res: Response): Promise<void> => {
@@ -33,3 +33,28 @@ export const getStockProdDetailsController = async (req: Request, res: Response)
       res.status(500).json({ message: "Failed to fetch Godown Product" });
   }
   };
+
+  // Create Godown
+  export const createController = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { GodownId, StockDate, Narration, productdetails } = req.body;
+
+        if (!GodownId || !StockDate || !productdetails || !Array.isArray(productdetails) || productdetails.length === 0) {
+            res.status(400).json({ message: "Invalid input data." });
+            return;
+        }
+
+        const saveRecord = {
+            GodownId,
+            StockDate,
+            Narration,
+            productdetails
+        };
+
+        const result = await create(saveRecord);
+        res.status(201).json({ message: "Stock added successfully", data: result });
+    } catch (error) {
+        console.error("Error creating godown stock:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};

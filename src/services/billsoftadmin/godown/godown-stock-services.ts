@@ -1,6 +1,7 @@
 import { GodownStock, GodownStockAttributes, GodownStockCreationAttributes } from "@models/billsoftadmin/godown/godown-stock-model";
 import { Product, ProductAttributes, ProductCreationAttributes } from "@models/billsoftadmin/selling-product/product-model";
 import { db } from "config/knexconfig";
+import { Knex } from "knex";
 import { Op, QueryTypes } from "sequelize";
 
 export interface StockProdDetails {
@@ -10,6 +11,27 @@ export interface StockProdDetails {
     CgstPer: number;
     SgstPer: number;
     IgstPer: number;
+}
+
+interface ProductDetails {
+    ProdId: number;
+    AvailStock: number;
+    AvailStockUnit: string;
+    Qty: number;
+    QtyUnit: string;
+    Price: number;
+    TotalPrice: number;
+    CgstPer: number;
+    SgstPer: number;
+    IgstPer: number;
+    GstAmt: number;
+}
+
+interface GodownStockCreationAttributes2 {
+    GodownId: number;
+    StockDate: string;
+    Narration: string;
+    productdetails: ProductDetails[];
 }
 
 // Get Godown Account
@@ -103,6 +125,46 @@ export const getStockProdDetails = async (
         };
     } catch (error) {
         console.error("Error fetching stock product details:", error);
+        throw error;
+    }
+};
+
+// Create godown stock
+export const create = async (saveRecord: GodownStockCreationAttributes2) => {
+    try {
+        // Insert product stock details
+        const productRecords = saveRecord.productdetails.map(product => ({
+            InvId: 0, // Fixed: Hardcoded InvId as per request
+            GodownId: saveRecord.GodownId,
+            ProdId: product.ProdId,
+            Qty: product.Qty,
+            Unit: product.QtyUnit,
+            Price: product.Price,
+            TotalPrice: product.TotalPrice,
+            CgstPer: product.CgstPer,
+            SgstPer: product.SgstPer,
+            IgstPer: product.IgstPer,
+            GstAmt: product.GstAmt,
+            CgstAmt: (product.TotalPrice * product.CgstPer) / 100,
+            SgstAmt: (product.TotalPrice * product.SgstPer) / 100,
+            IgstAmt: (product.TotalPrice * product.IgstPer) / 100,
+            CreatedBy: 1, // Change based on the authenticated user
+            StockDate: saveRecord.StockDate,
+            CreatedDate: new Date(),
+            Status: "Cr",
+            UserId: 0,
+            FranchiseId:0,
+            ModifiedBy:0,
+            TransferId:0,
+            RetailerId:0,
+        }));
+
+        // Perform bulk insert
+        await db("tbl_godown_raw_prod_stock_2025").insert(productRecords);
+
+        return { message: "Stock added successfully" };
+    } catch (error) {
+        console.error("Error inserting data:", error);
         throw error;
     }
 };
